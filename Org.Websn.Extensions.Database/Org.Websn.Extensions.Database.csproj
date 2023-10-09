@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <Version>1.0.1</Version>
     <TargetFrameworks>net7.0;net7.0-windows;net6.0;net6.0-windows;net5.0;net5.0-windows;net472;net48;net481</TargetFrameworks>
     <RootNamespace>Org.Websn.Extensions</RootNamespace>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
@@ -15,6 +16,9 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <Title>$(AssemblyName)</Title>
     <RepositoryUrl>https://github.com/Nomris/extensions/tree/main</RepositoryUrl>
+    <Description>A package for interacting with the System.Data interfaces</Description>
+    <Copyright></Copyright>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,9 +29,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Readme.md">
+    <None Include="readme.md">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 

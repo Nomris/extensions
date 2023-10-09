@@ -1,21 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Data;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Collections.Generic;
-
-/* Unmerged change from project 'Org.Websn.Extensions.Database (net7.0)'
-Before:
-using System.Text;
-After:
-using System.Text;
-using Extensions;
-using Org.Websn.Extensions;
-*/
-using System.Text;
 
 namespace Org.Websn.Extensions
 {
@@ -178,9 +163,13 @@ namespace Org.Websn.Extensions
 
         #region Misc
 
+        /// <inheritdoc cref="GetStream(IDataRecord, int)"/>
         public static Stream GetStream(this IDataRecord record, string name)
             => record.GetStream(record.GetOrdinal(name));
 
+        /// <summary>
+        /// Gets a <see cref="Stream"/> from a byte array from <paramref name="record"/>
+        /// </summary>
         public static Stream GetStream(this IDataRecord record, int i)
         {
             byte[] buffer = new byte[16 * 1024];
@@ -202,6 +191,9 @@ namespace Org.Websn.Extensions
             return memoryStream;
         }
 
+        /// <summary>
+        /// Gets the <see cref="Guid"/> by reading a byte array from the <paramref name="record"/>
+        /// </summary>
         public static Guid GetGuidRaw(this IDataRecord record, int i)
         {
             byte[] guidBuffer = new byte[16];

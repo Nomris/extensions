@@ -1,24 +1,17 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Data;
-using System.Reflection;
-using System.Runtime.Serialization;
-
-/* Unmerged change from project 'Org.Websn.Extensions.Database (net5.0-windows)'
-Before:
-using System.Runtime.Serialization.Formatters.Binary;
-After:
-using System.Runtime.Serialization.Formatters.Binary;
-using Extensions;
-using Org.Websn.Extensions;
-*/
-using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Org.Websn.Extensions
 {
     public static class IDbCommandExtensions
     {
+        /// <summary>
+        /// Addes or sets the paremter <paramref name="name"/>
+        /// </summary>
+        /// <param name="command">The <see cref="IDbCommand"/> that the parameter is to be set on</param>
+        /// <param name="name">The name of the parameter</param>
+        /// <param name="value">The value that the parameter should have</param>
         public static void AddGenericParameter(this IDbCommand command, string name, object value)
         {
             IDataParameter parameter = command.Parameters.Contains(name) ? (IDataParameter)command.Parameters[name] : command.CreateParameter();
@@ -35,6 +28,12 @@ namespace Org.Websn.Extensions
             command.Parameters.Add(parameter);
         }
 
+        /// <summary>
+        /// Addes or sets a <see cref="Stream"/> as a parameter
+        /// </summary>
+        /// <param name="command">The <see cref="IDbCommand"/> that the parameter is to be set on</param>
+        /// <param name="name">The name of the parameter</param>
+        /// <param name="stream">The value that the parameter should have</param>
         public static void AddStream(this IDbCommand command, string name, Stream stream)
         {
             using (MemoryStream memoryStream = new MemoryStream())
