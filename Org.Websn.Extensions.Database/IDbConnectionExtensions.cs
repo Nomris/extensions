@@ -88,7 +88,7 @@ namespace Org.Websn.Extensions
         {
             if (connection == null) throw new ArgumentNullException(nameof(connection));
             if (!openConnection.HasValue)
-                openConnection = IsConnectionOpen(connection);
+                openConnection = !IsConnectionOpen(connection);
 
             if (openConnection.Value && connection.IsConnectionOpen())
                 throw new InvalidOperationException("Cannot open connection that is already open");
