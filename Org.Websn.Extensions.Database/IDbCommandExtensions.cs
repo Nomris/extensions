@@ -14,6 +14,8 @@ namespace Org.Websn.Extensions
         /// <param name="value">The value that the parameter should have</param>
         public static void AddGenericParameter(this IDbCommand command, string name, object value)
         {
+            if (value == null) value = DBNull.Value;
+
             IDataParameter parameter = command.Parameters.Contains(name) ? (IDataParameter)command.Parameters[name] : command.CreateParameter();
             parameter.ParameterName = name;
             if (value.GetType() == typeof(Guid))
