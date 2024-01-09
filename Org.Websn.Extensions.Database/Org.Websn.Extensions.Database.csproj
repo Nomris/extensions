@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Version>1.0.1.2</Version>
-    <TargetFrameworks>net7.0;net7.0-windows;net6.0;net6.0-windows;net5.0;net5.0-windows;net472;net48;net481</TargetFrameworks>
+    <Version>1.0.2</Version>
+    <TargetFrameworks>net8.0;net8.0-windows;net7.0;net7.0-windows;net6.0;net6.0-windows;net472;net48;net481;netstandard2.0</TargetFrameworks>
     <RootNamespace>Org.Websn.Extensions</RootNamespace>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Authors>Nomris</Authors>
