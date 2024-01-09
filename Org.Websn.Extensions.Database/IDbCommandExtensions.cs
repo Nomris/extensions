@@ -18,10 +18,26 @@ namespace Org.Websn.Extensions
 
             IDataParameter parameter = command.Parameters.Contains(name) ? (IDataParameter)command.Parameters[name] : command.CreateParameter();
             parameter.ParameterName = name;
-            if (value.GetType() == typeof(Guid))
+
+            Type type = value.GetType();
+
+            if (type == typeof(Guid))
             {
 
                 parameter.Value = ((Guid)value).ToByteArray();
+            }
+            else if (type.IsEnum)
+            {
+                type = type.GetEnumUnderlyingType();
+
+                if (type == typeof(byte)) parameter.Value = (byte)value;
+                if (type == typeof(sbyte)) parameter.Value = (sbyte)value;
+                if (type == typeof(ushort)) parameter.Value = (ushort)value;
+                if (type == typeof(short)) parameter.Value = (short)value;
+                if (type == typeof(uint)) parameter.Value = (uint)value;
+                if (type == typeof(int)) parameter.Value = (int)value;
+                if (type == typeof(ulong)) parameter.Value = (ulong)value;
+                if (type == typeof(long)) parameter.Value = (long)value;
             }
             else
                 parameter.Value = value;
