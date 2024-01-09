@@ -146,7 +146,7 @@ namespace Org.Websn.Extensions
         /// <param name="openConnection">Wether the <paramref name="connection"/> should be opened. Set <see langword="false"/> if the <paramref name="connection"/> is already open. Set <see langword="null"/> to auto determin</param>
         /// <param name="args">The Arguments</param>
         /// <returns>The <see cref="IDataReader"/> that represents the <paramref name="commandText"/></returns>
-        public static IDataReader WrapCommandAsReader(IDbConnection connection, string commandText, bool? openConnection, params object[] args)
+        public static IDataReader WrapCommandAsReader(this IDbConnection connection, string commandText, bool? openConnection, params object[] args)
         {
             if (connection == null) throw new ArgumentNullException(nameof(connection));
             if (!openConnection.HasValue)
@@ -197,7 +197,7 @@ namespace Org.Websn.Extensions
         /// <param name="result">The <see cref="IDataReader"/> that represents the <paramref name="commandText"/></param>
         /// <param name="exc">The <see cref="Exception"/> if any was thrown, else it will be <see langword="null"/></param>
         /// <returns>Returns <see langword="true"/> if the command completed successfully, <see langword="false"/> otherwise</returns>
-        public static bool TryWrapCommandAsReader(IDbConnection connection, string commandText, out IDataReader result, out Exception exc, bool? openConnection, params object[] args)
+        public static bool TryWrapCommandAsReader(this IDbConnection connection, string commandText, out IDataReader result, out Exception exc, bool? openConnection, params object[] args)
         {
             try
             {
