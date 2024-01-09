@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Data;
+using System.Data.SqlTypes;
 
 namespace Org.Websn.Extensions
 {
@@ -194,11 +195,63 @@ namespace Org.Websn.Extensions
         /// <summary>
         /// Gets the <see cref="Guid"/> by reading a byte array from the <paramref name="record"/>
         /// </summary>
+        public static Guid GetGuidRaw(this IDataRecord record, string name)
+            => record.GetGuidRaw(record.GetOrdinal(name));
+
+        /// <summary>
+        /// Gets the <see cref="Guid"/> by reading a byte array from the <paramref name="record"/>
+        /// </summary>
         public static Guid GetGuidRaw(this IDataRecord record, int i)
         {
             byte[] guidBuffer = new byte[16];
             record.GetBytes(i, 0, guidBuffer, 0, 16);
             return new Guid(guidBuffer);
+        }
+
+        #endregion
+
+        #region Nullable
+
+        /// <summary>
+        /// Checks if the value of <paramref name="name"/> is <see langword="null"/>, if it is then <paramref name="nullValue"/> will be returned else <paramref name="valueFunction"/> will be used to retrive the value
+        /// </summary>
+        public static T GetNullable<T>(this IDataRecord record, string name, T nullValue, Func<int, T> valueFunction)
+            => record.GetNullable(record.GetOrdinal(name), nullValue, valueFunction);
+        /// <summary>
+        /// Checks if the value at <paramref name="i"/> is <see langword="null"/>, if it is then <paramref name="nullValue"/> will be returned else <paramref name="valueFunction"/> will be used to retrive the value
+        /// </summary>
+        public static T GetNullable<T>(this IDataRecord record, int i, T nullValue, Func<int, T> valueFunction)
+            => record.IsDBNull(i) ? nullValue : valueFunction(i);
+
+        #endregion
+
+        #region Enum
+
+        /// <summary>
+        /// Gets the <typeparamref name="T"/> of <paramref name="name"/>
+        /// </summary>
+        /// <exception cref="ArgumentException">The Enum dosn't use a supported underling type</exception>
+        public static T GetEnum<T>(this IDataRecord record, string name) where T : Enum
+            => record.GetEnum<T>(record.GetOrdinal(name));
+
+        /// <summary>
+        /// Gets the <typeparamref name="T"/> at <paramref name="i"/>
+        /// </summary>
+        /// <exception cref="ArgumentException">The Enum dosn't use a supported underling type</exception>
+        public static T GetEnum<T>(this IDataRecord record, int i) where T : Enum
+        {
+            Type type = typeof(T).GetEnumUnderlyingType();
+
+            if (type == typeof(byte)) return (T)Enum.ToObject(typeof(T), record.GetByte(i));
+            if (type == typeof(sbyte)) return (T)Enum.ToObject(typeof(T), record.GetSByte(i));
+            if (type == typeof(ushort)) return (T)Enum.ToObject(typeof(T), record.GetUInt16(i));
+            if (type == typeof(short)) return (T)Enum.ToObject(typeof(T), record.GetInt16(i));
+            if (type == typeof(uint)) return (T)Enum.ToObject(typeof(T), record.GetUInt32(i));
+            if (type == typeof(int)) return (T)Enum.ToObject(typeof(T), record.GetInt32(i));
+            if (type == typeof(ulong)) return (T)Enum.ToObject(typeof(T), record.GetUInt64(i));
+            if (type == typeof(long)) return (T)Enum.ToObject(typeof(T), record.GetInt64(i));
+
+            throw new ArgumentException("The Enum dosn't use a supported underling type", nameof(T));
         }
 
         #endregion
