@@ -2,6 +2,8 @@
 using System.IO;
 using System.Data;
 using System.Data.SqlTypes;
+using System.Diagnostics;
+using System.Net;
 
 namespace Org.Websn.Extensions
 {
@@ -212,18 +214,52 @@ namespace Org.Websn.Extensions
 
         #region Nullable
 
+#if NET5_0_OR_GREATER
+#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
         /// <summary>
-        /// Checks if the value of <paramref name="name"/> is <see langword="null"/>, if it is then <paramref name="nullValue"/> will be returned else <paramref name="valueFunction"/> will be used to retrive the value
+        /// Checks if the value of <paramref name="name"/> is <see langword="null"/>, if it is then <see langword="null" /> will be returned else <paramref name="valueFunction"/> will be used to retrive the value
         /// </summary>
-        public static T GetNullable<T>(this IDataRecord record, string name, T nullValue, Func<int, T> valueFunction)
-            => record.GetNullable(record.GetOrdinal(name), nullValue, valueFunction);
+        public static T? GetNullable<T>(this IDataRecord record, string name, Func<int, T> valueFunction)
+            => record.GetNullable(record.GetOrdinal(name), valueFunction);
         /// <summary>
-        /// Checks if the value at <paramref name="i"/> is <see langword="null"/>, if it is then <paramref name="nullValue"/> will be returned else <paramref name="valueFunction"/> will be used to retrive the value
+        /// Checks if the value at <paramref name="i"/> is <see langword="null"/>, if it is then <see langword="null" /> will be returned else <paramref name="valueFunction"/> will be used to retrive the value
         /// </summary>
-        public static T GetNullable<T>(this IDataRecord record, int i, T nullValue, Func<int, T> valueFunction)
-            => record.IsDBNull(i) ? nullValue : valueFunction(i);
+        public static T? GetNullable<T>(this IDataRecord record, int i, Func<int, T> valueFunction)
+            => record.IsDBNull(i) ? default(T?) : valueFunction(i);
+#pragma warning restore CS8632
+#else
 
-        #endregion
+        /// <summary>
+        /// Checks if the value of <paramref name="name"/> is <see langword="null"/>, if it is then <see langword="null" /> will be returned else <paramref name="valueFunction"/> will be used to retrive the value
+        /// </summary>
+        public static T GetNullable<T>(this IDataRecord record, string name, Func<int, T> valueFunction) where T : class
+            => record.GetNullable(record.GetOrdinal(name), valueFunction);
+        /// <summary>
+        /// Checks if the value at <paramref name="i"/> is <see langword="null"/>, if it is then <see langword="null" /> will be returned else <paramref name="valueFunction"/> will be used to retrive the value
+        /// </summary>
+        public static T GetNullable<T>(this IDataRecord record, int i, Func<int, T> valueFunction) where T : class
+            => record.IsDBNull(i) ? null : valueFunction(i);
+#endif
+        /// <summary>
+        /// Checks if the value of <paramref name="name"/> is <see langword="null"/>, if it is then <see langword="null" /> will be returned else <paramref name="valueFunction"/> will be used to retrive the value
+        /// </summary>
+#if NET5_0_OR_GREATER
+        [Obsolete("Has been combiend with IDataRecrod.GetNullable", false, DiagnosticId = "WEBSN0001", UrlFormat = "https://diag.websn.org/c-sharp/#{0}")]
+#endif
+        public static T? GetNullableStruct<T>(this IDataRecord record, string name, Func<int, T> valueFunction) where T : struct
+            => record.GetNullableStruct(record.GetOrdinal(name), valueFunction);
+        /// <summary>
+        /// Checks if the value at <paramref name="i"/> is <see langword="null"/>, if it is then <see langword="null" /> will be returned else <paramref name="valueFunction"/> will be used to retrive the value
+        /// </summary>
+#if NET5_0_OR_GREATER
+        [Obsolete("Has been combiend with IDataRecrod.GetNullable", false, DiagnosticId = "WEBSN0001", UrlFormat = "https://diag.websn.org/c-sharp/#{0}")]
+#endif
+        public static T? GetNullableStruct<T>(this IDataRecord record, int i, Func<int, T> valueFunction) where T : struct
+            => record.IsDBNull(i) ? null : new T?(valueFunction(i));
+
+
+
+#endregion
 
         #region Enum
 
