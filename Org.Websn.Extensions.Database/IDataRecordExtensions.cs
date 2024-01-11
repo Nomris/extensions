@@ -2,6 +2,8 @@
 using System.IO;
 using System.Data;
 using System.Data.SqlTypes;
+using System.Diagnostics;
+using System.Net;
 
 namespace Org.Websn.Extensions
 {
@@ -212,18 +214,33 @@ namespace Org.Websn.Extensions
 
         #region Nullable
 
-        /// <summary>
-        /// Checks if the value of <paramref name="name"/> is <see langword="null"/>, if it is then <paramref name="nullValue"/> will be returned else <paramref name="valueFunction"/> will be used to retrive the value
-        /// </summary>
-        public static T GetNullable<T>(this IDataRecord record, string name, T nullValue, Func<int, T> valueFunction)
-            => record.GetNullable(record.GetOrdinal(name), nullValue, valueFunction);
-        /// <summary>
-        /// Checks if the value at <paramref name="i"/> is <see langword="null"/>, if it is then <paramref name="nullValue"/> will be returned else <paramref name="valueFunction"/> will be used to retrive the value
-        /// </summary>
-        public static T GetNullable<T>(this IDataRecord record, int i, T nullValue, Func<int, T> valueFunction)
-            => record.IsDBNull(i) ? nullValue : valueFunction(i);
 
-        #endregion
+        /// <summary>
+        /// Checks if the value of <paramref name="name"/> is <see langword="null"/>, if it is then <see langword="null" /> will be returned else <paramref name="valueFunction"/> will be used to retrive the value
+        /// </summary>
+        public static T GetNullable<T>(this IDataRecord record, string name, Func<int, T> valueFunction) where T : class
+            => record.GetNullable(record.GetOrdinal(name), valueFunction);
+        /// <summary>
+        /// Checks if the value at <paramref name="i"/> is <see langword="null"/>, if it is then <see langword="null" /> will be returned else <paramref name="valueFunction"/> will be used to retrive the value
+        /// </summary>
+        public static T GetNullable<T>(this IDataRecord record, int i, Func<int, T> valueFunction) where T : class
+            => record.IsDBNull(i) ? null : valueFunction(i);
+
+        /// <summary>
+        /// Checks if the value of <paramref name="name"/> is <see langword="null"/>, if it is then <see langword="null" /> will be returned else <paramref name="valueFunction"/> will be used to retrive the value
+        /// </summary>
+        public static T? GetNullableStruct<T>(this IDataRecord record, string name, Func<int, T> valueFunction) where T : struct
+            => record.GetNullableStruct(record.GetOrdinal(name), valueFunction);
+
+        /// <summary>
+        /// Checks if the value at <paramref name="i"/> is <see langword="null"/>, if it is then <see langword="null" /> will be returned else <paramref name="valueFunction"/> will be used to retrive the value
+        /// </summary>
+        public static T? GetNullableStruct<T>(this IDataRecord record, int i, Func<int, T> valueFunction) where T : struct
+            => record.IsDBNull(i) ? null : new T?(valueFunction(i));
+
+
+
+#endregion
 
         #region Enum
 
