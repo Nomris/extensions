@@ -161,10 +161,10 @@ namespace Org.Websn.Extensions
 
                 IDbCommand command = connection.CreateCommand();
                 int i = 0;
-                command.CommandText = string.Format(commandText, args.Select(arg => $"@_{i++}"));
+                command.CommandText = string.Format(commandText, args.Select(arg => $"@_{i++}").ToArray());
                 i = -1;
                 while (++i < args.Length)
-                    command.AddGenericParameter($"@_{i}", args[i]);
+                    command.AddGenericParameter($"_{i}", args[i]);
 
                 return new DataReaderProxy(command.ExecuteReader(), () =>
                 {
