@@ -23,8 +23,21 @@ namespace Org.Websn.Extensions
 
             if (type == typeof(Guid))
             {
-
                 parameter.Value = ((Guid)value).ToByteArray();
+            }
+            if (typeof(Stream).IsAssignableFrom(type))
+            {
+                Stream stream = (Stream)value;
+                long pos = stream.Position; // Get current position
+                stream.Position = 0;
+                using (MemoryStream memoryStream = new MemoryStream())
+                {
+                    stream.CopyTo(memoryStream);
+
+                    parameter.Value = memoryStream.ToArray();
+                    memoryStream.Close();
+                }
+                stream.Position = pos; // Reset post to original postion
             }
             else if (type.IsEnum)
             {
@@ -54,6 +67,8 @@ namespace Org.Websn.Extensions
         /// <param name="stream">The value that the parameter should have</param>
         public static void AddStream(this IDbCommand command, string name, Stream stream)
         {
+            long pos = stream.Position; // Get current position
+            stream.Position = 0;
             using (MemoryStream memoryStream = new MemoryStream())
             {
                 stream.CopyTo(memoryStream);
@@ -61,6 +76,7 @@ namespace Org.Websn.Extensions
                 command.AddGenericParameter(name, memoryStream.ToArray());
                 memoryStream.Close();
             }
+            stream.Position = pos; // Reset post to original postion
         }
     }
 }

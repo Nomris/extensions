@@ -120,20 +120,20 @@ namespace Org.Websn.Extensions
 
         public static sbyte GetSByte(this IDataRecord record, string name)
         {
-            return (sbyte)record.GetValue(record.GetOrdinal(name));
+            return (sbyte)(uint)record.GetValue(record.GetOrdinal(name));
         }
 
         public static ushort GetUInt16(this IDataRecord record, int i)
         {
             unchecked
             {
-                return (ushort)record.GetValue(i);
+                return (ushort)(uint)record.GetValue(i);
             }
         }
 
         public static ushort GetUInt16(this IDataRecord record, string name)
         {
-            return (ushort)record.GetValue(record.GetOrdinal(name));
+            return (ushort)(uint)record.GetValue(record.GetOrdinal(name));
         }
 
         public static uint GetUInt32(this IDataRecord record, int i)
