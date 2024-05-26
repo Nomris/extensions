@@ -25,7 +25,7 @@ namespace Org.Websn.Extensions
             {
                 parameter.Value = ((Guid)value).ToByteArray();
             }
-            if (typeof(Stream).IsAssignableFrom(type))
+            else if (typeof(Stream).IsAssignableFrom(type))
             {
                 Stream stream = (Stream)value;
                 long pos = stream.Position; // Get current position
