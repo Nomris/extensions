@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Version>1.0.2.7</Version>
+    <Version>1.0.2.8</Version>
     <TargetFrameworks>net8.0;net7.0;net6.0;net472;net48;net481;netstandard2.0</TargetFrameworks>
     <RootNamespace>Org.Websn.Extensions</RootNamespace>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Authors>Nomris</Authors>
     <Company />
-    <PackageProjectUrl>https://github.com/Nomris/extensions/tree/main</PackageProjectUrl>
+    <PackageProjectUrl>https://gitlab.websn.org/websn/cs-extensions/-/tree/main/Org.Websn.Extensions.Database?ref_type=heads</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
     <NeutralLanguage>en</NeutralLanguage>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
@@ -15,7 +15,7 @@
     <IncludeSymbols>True</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <Title>$(AssemblyName)</Title>
-    <RepositoryUrl>https://github.com/Nomris/extensions/tree/main</RepositoryUrl>
+    <RepositoryUrl>https://gitlab.websn.org/websn/cs-extensions</RepositoryUrl>
     <Description>A package for interacting with the System.Data interfaces</Description>
     <Copyright></Copyright>
     <PackageReadmeFile>Readme.md</PackageReadmeFile>
