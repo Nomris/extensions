@@ -18,7 +18,7 @@
     <RepositoryUrl>https://github.com/Nomris/extensions/tree/main</RepositoryUrl>
     <Description>A package for interacting with the System.Data interfaces</Description>
     <Copyright></Copyright>
-    <PackageReadmeFile>readme.md</PackageReadmeFile>
+    <PackageReadmeFile>Readme.md</PackageReadmeFile>
   </PropertyGroup>
 
 
@@ -30,7 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="readme.md">
+    <None Include="Readme.md">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
